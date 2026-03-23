@@ -1,5 +1,5 @@
 context:
-  version: "6.7.2"
+  version: "6.11.0"
 
 package:
   name: qt6-serialport
@@ -7,20 +7,18 @@ package:
 
 source:
   url: https://github.com/qt/qtserialport/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: d7e27b1554dac0d617372900c93df9a3b3acd96104ee52386ffc39c33867f0c1
+  sha256: cd0d7ae435b9204e3e8706b156faeb20de4298454a54a85e42d3b9fa88d550b8
 
 build:
   number: 0
   script:
     - if: win
       then:
-        - cmake -S . -B build -G Ninja %CMAKE_ARGS%
-          -DQt6_DIR=%PREFIX%\\Library\\lib\\cmake\\Qt6
+        - cmake -S . -B build -G Ninja %CMAKE_ARGS% -DQt6_DIR=%PREFIX%\\Library\\lib\\cmake\\Qt6
       else:
-        - cmake -S . -B build -G Ninja ${CMAKE_ARGS}
-          -DQt6_DIR=${{ PREFIX }}/lib/cmake/Qt6
+        - cmake -S . -B build -G Ninja ${CMAKE_ARGS} -DQt6_DIR=${{ PREFIX }}/lib/cmake/Qt6
     - cmake --build build --parallel ${{ CPU_COUNT }}
-    - ctest --test-dir build --output-on-failure 
+    - ctest --test-dir build --output-on-failure
     - cmake --install build
     - if: win
       then:
