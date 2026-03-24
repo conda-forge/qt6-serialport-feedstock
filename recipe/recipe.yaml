@@ -1,5 +1,5 @@
 context:
-  version: "6.10.2"
+  version: "6.11.0"
 
 package:
   name: qt6-serialport
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/qt/qtserialport/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 41f5b39cf0967ab883fd15d61a92dd60124664c1537fd71cfc7e7a7052f9420b
+  sha256: cd0d7ae435b9204e3e8706b156faeb20de4298454a54a85e42d3b9fa88d550b8
 
 build:
   number: 0
