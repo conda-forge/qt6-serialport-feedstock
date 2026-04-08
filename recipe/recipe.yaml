@@ -1,43 +1,41 @@
 context:
   version: "6.10.2"
+  maj_min: ${{ (version | split('.'))[:2] | join('.') }}
 
 package:
   name: qt6-serialport
   version: ${{ version }}
 
 source:
-  url: https://github.com/qt/qtserialport/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 41f5b39cf0967ab883fd15d61a92dd60124664c1537fd71cfc7e7a7052f9420b
+  url:
+    https://download.qt.io/official_releases/qt/${{ maj_min }}/${{ version }}/submodules/qtserialport-everywhere-src-${{ version }}.tar.xz
+  md5: 1825f7ea00c6782403bae21b6df9283e
 
 build:
-  number: 0
-  script:
-    - if: win
-      then:
-        - cmake -S . -B build -G Ninja %CMAKE_ARGS% -DQt6_DIR=%PREFIX%\\Library\\lib\\cmake\\Qt6
-      else:
-        - cmake -S . -B build -G Ninja ${CMAKE_ARGS} -DQt6_DIR=${{ PREFIX }}/lib/cmake/Qt6
-    - cmake --build build --parallel ${{ CPU_COUNT }}
-    - ctest --test-dir build --output-on-failure
-    - cmake --install build
-    - if: win
-      then:
-        - copy %PREFIX%\Library\lib\qt6\bin\Qt6SerialPort.dll %PREFIX%\Library\bin\Qt6SerialPort.dll
+  number: 1
 
 requirements:
   build:
-    - ${{ compiler('cxx') }}
-    - ${{ stdlib('c') }}
     - cmake
     - ninja
-    - pkg-config
+    - perl
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - if: build_platform != target_platform
+      then: qt6-main ${{ version }}.*
   host:
-    - qt6-main
+    - qt6-main ${{ version }}.*
+  run:
+    - qt6-main ${{ version }}.*
+  run_exports:
+    - ${{ pin_subpackage('qt6-serialport', upper_bound='x.x') }}
 
 tests:
   - package_contents:
       include:
         - qt6/QtSerialPort/qserialport.h
+        - qt6/QtSerialPort/qserialportglobal.h
       lib:
         - Qt6SerialPort
 
@@ -56,3 +54,6 @@ about:
 extra:
   recipe-maintainers:
     - multimeric
+    - AndreFavotto
+    - conda-forge/qt-main
+  feedstock-name: qt6-serialport
