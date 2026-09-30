@@ -1,5 +1,5 @@
 context:
-  version: "6.11.2"
+  version: "6.12.0"
   maj_min: ${{ (version | split('.'))[:2] | join('.') }}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://download.qt.io/official_releases/qt/${{ maj_min }}/${{ version }}/submodules/qtserialport-everywhere-src-${{ version }}.tar.xz
-  md5: 4d61436fd25bd5c76fc5981d2b9cce24
+  md5: bc62cfd623e089d1bc1c31f97609c7b4
 
 build:
   number: 0
